@@ -1,0 +1,9 @@
+/* Minimal reset for Ant Design to take over styling */
+body {
+  margin: 0;
+  padding: 0;
+}
+
+#root {
+  height: 100%;
+}
