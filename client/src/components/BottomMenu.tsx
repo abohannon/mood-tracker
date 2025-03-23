@@ -26,7 +26,6 @@ const BottomMenu = ({ currentTab, onTabChange }: BottomMenuProps) => {
           justifyContent: 'space-around',
           borderTop: '1px solid #f0f0f0',
           backgroundColor: 'white',
-          paddingBottom: 'env(safe-area-inset-bottom)', // For iPhone X and newer
           transform: 'translateZ(0)', // Force hardware acceleration
           backfaceVisibility: 'hidden', // Prevent flickering
           willChange: 'transform', // Optimize for animations
@@ -60,7 +59,7 @@ const BottomMenu = ({ currentTab, onTabChange }: BottomMenuProps) => {
         trigger="click"
         style={{
           right: 24,
-          bottom: 70,
+          bottom: 70, // Adjusted since safe area is now handled at app level
           zIndex: 1001
         }}
         icon={<PlusOutlined />}

@@ -1,17 +1,18 @@
 import { createRootRoute, createRoute, createRouter, Outlet } from '@tanstack/react-router'
-import { Card, Space, Typography } from 'antd'
-import { SmileOutlined } from '@ant-design/icons'
-
-const { Title, Text } = Typography
+import { HomePage } from './components/HomePage'
+import { StatsPage } from './components/StatsPage'
+import { ProfilePage } from './components/ProfilePage'
+import { OfflineAlert } from './components/OfflineAlert'
 
 // Root component for router
 const rootRoute = createRootRoute({
-  component: () => <RootComponent />
+  component: () => (
+    <div>
+      <OfflineAlert />
+      <Outlet />
+    </div>
+  )
 })
-
-function RootComponent() {
-  return <Outlet />
-}
 
 // Define homepage
 export const homePage = createRoute({
@@ -20,17 +21,6 @@ export const homePage = createRoute({
   component: HomePage,
 })
 
-function HomePage() {
-  return (
-    <Card title="Welcome to Mood Tracker" bordered={false} style={{ maxWidth: 600, margin: '0 auto' }}>
-      <Space direction="vertical" size="large" style={{ width: '100%' }}>
-        <Title level={4}>Track your moods with ease <SmileOutlined /></Title>
-        <Text>This application helps you track and analyze your daily moods.</Text>
-      </Space>
-    </Card>
-  )
-}
-
 // Define stats page
 export const statsPage = createRoute({
   getParentRoute: () => rootRoute,
@@ -38,28 +28,12 @@ export const statsPage = createRoute({
   component: StatsPage,
 })
 
-function StatsPage() {
-  return (
-    <Card title="Your Mood Stats" bordered={false} style={{ maxWidth: 600, margin: '0 auto' }}>
-      <Text>Here you'll see statistics about your moods. Coming soon...</Text>
-    </Card>
-  )
-}
-
 // Define profile page
 export const profilePage = createRoute({
   getParentRoute: () => rootRoute,
   path: '/profile',
   component: ProfilePage,
 })
-
-function ProfilePage() {
-  return (
-    <Card title="Your Profile" bordered={false} style={{ maxWidth: 600, margin: '0 auto' }}>
-      <Text>Profile settings and information will appear here.</Text>
-    </Card>
-  )
-}
 
 // Create the route tree
 const routeTree = rootRoute.addChildren([
