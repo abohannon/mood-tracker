@@ -4,11 +4,19 @@ import App from './App'
 import './index.css'
 import { router } from './router'
 
-// Initialize the router
-await router.load()
+// Initialize the router before rendering
+const appElement = document.getElementById('root') as HTMLElement
 
-ReactDOM.createRoot(document.getElementById('root')!).render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-)
+// Create a function that loads the router and then renders the app
+function renderApp() {
+  router.load().then(() => {
+    ReactDOM.createRoot(appElement).render(
+      <React.StrictMode>
+        <App />
+      </React.StrictMode>,
+    )
+  })
+}
+
+// Call the function to start the application
+renderApp()
