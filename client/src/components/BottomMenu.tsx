@@ -1,5 +1,7 @@
 import { Menu, FloatButton } from 'antd';
 import { HomeOutlined, BarChartOutlined, UserOutlined, PlusOutlined, ClockCircleOutlined } from '@ant-design/icons';
+import { useState } from 'react';
+import TodayModal from './TodayModal';
 
 interface BottomMenuProps {
   currentTab: string;
@@ -7,8 +9,18 @@ interface BottomMenuProps {
 }
 
 const BottomMenu = ({ currentTab, onTabChange }: BottomMenuProps) => {
+  const [isTodayModalOpen, setIsTodayModalOpen] = useState(false);
+
   const handleMenuClick = (e: { key: string }) => {
     onTabChange(e.key);
+  };
+
+  const openTodayModal = () => {
+    setIsTodayModalOpen(true);
+  };
+
+  const closeTodayModal = () => {
+    setIsTodayModalOpen(false);
   };
 
   return (
@@ -62,15 +74,17 @@ const BottomMenu = ({ currentTab, onTabChange }: BottomMenuProps) => {
           bottom: 70, // Adjusted since safe area is now handled at app level
           zIndex: 1001
         }}
-        icon={<PlusOutlined />}
+        icon={<PlusOutlined  />}
         type="primary"
       >
         <FloatButton
           icon={<ClockCircleOutlined />}
           tooltip="Today"
-          onClick={() => console.log('Add today\'s mood')}
+          onClick={openTodayModal}
         />
       </FloatButton.Group>
+
+      <TodayModal isOpen={isTodayModalOpen} onClose={closeTodayModal} />
     </>
   );
 };
