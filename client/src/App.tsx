@@ -1,12 +1,48 @@
-import { useState } from 'react'
-import { Button, Layout, Typography, Card, Space } from 'antd'
-import { HeartFilled, SmileOutlined } from '@ant-design/icons'
+import { useState, useEffect } from 'react'
+import { Layout, Typography } from 'antd'
+import { HeartFilled } from '@ant-design/icons'
+import { RouterProvider } from '@tanstack/react-router'
+import { TanStackRouterDevtools } from '@tanstack/router-devtools'
+import BottomMenu from './components/BottomMenu'
+import { router } from './router'
 
-const { Header, Content, Footer } = Layout
-const { Title, Text } = Typography
+const { Header, Content } = Layout
+const { Title } = Typography
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [currentTab, setCurrentTab] = useState('home')
+
+  // Keep tab state in sync with current route
+  useEffect(() => {
+    // Subscribe to route changes
+    const unsubscribe = router.subscribe('onBeforeNavigate', () => {
+      const path = router.state.location.pathname
+      if (path === '/') setCurrentTab('home')
+      else if (path === '/stats') setCurrentTab('stats')
+      else if (path === '/profile') setCurrentTab('profile')
+    })
+
+    return unsubscribe
+  }, [])
+
+  // Handle tab change
+  const handleTabChange = (tab: string) => {
+    setCurrentTab(tab)
+    // Navigate based on the selected tab
+    switch (tab) {
+      case 'home':
+        router.navigate({ to: '/' })
+        break
+      case 'stats':
+        router.navigate({ to: '/stats' })
+        break
+      case 'profile':
+        router.navigate({ to: '/profile' })
+        break
+      default:
+        router.navigate({ to: '/' })
+    }
+  }
 
   return (
     <Layout style={{ minHeight: '100vh' }}>
@@ -16,22 +52,12 @@ function App() {
           Mood Tracker
         </Title>
       </Header>
-      <Content style={{ padding: '2rem', minHeight: '80vh' }}>
-        <Card title="Welcome to Mood Tracker" bordered={false} style={{ maxWidth: 600, margin: '0 auto' }}>
-          <Space direction="vertical" size="large" style={{ width: '100%' }}>
-            <Title level={4}>Track your moods with ease <SmileOutlined /></Title>
-            <Text>This application helps you track and analyze your daily moods.</Text>
-            <div style={{ textAlign: 'center' }}>
-              <Button type="primary" size="large" onClick={() => setCount((count) => count + 1)}>
-                Clicked {count} {count === 1 ? 'time' : 'times'}
-              </Button>
-            </div>
-          </Space>
-        </Card>
+      <Content style={{ padding: '2rem', minHeight: '80vh', paddingBottom: '60px' }}>
+        <RouterProvider router={router} />
+        {import.meta.env.DEV && <TanStackRouterDevtools router={router} />}
       </Content>
-      <Footer style={{ textAlign: 'center' }}>
-        Mood Tracker ©{new Date().getFullYear()} Created with Ant Design
-      </Footer>
+
+      <BottomMenu currentTab={currentTab} onTabChange={handleTabChange} />
     </Layout>
   )
 }

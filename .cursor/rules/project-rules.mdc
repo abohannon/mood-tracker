@@ -1,0 +1,6 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+- This project has a `client` and `server` directory. When installing new Javascript dependencies, you should ALWAYS be in the `client` directory. DO NOT INSTALL DEPENDENCIES IN THE ROOT DIRECTORY.

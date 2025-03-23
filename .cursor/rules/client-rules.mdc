@@ -1,0 +1,7 @@
+---
+description: 
+globs: client/**/*
+alwaysApply: false
+---
+- This is a Vite React Typescript project that uses the Ant D Design library. ALWAYS prefer using Ant D components over custom styling.
+- This is a Progressive Web App and should prioritize mobile-first design.
