@@ -1,14 +1,13 @@
 import { useState, useEffect } from 'react'
-import { Layout, Typography, notification, Button } from 'antd'
-import { HeartFilled, CloudDownloadOutlined } from '@ant-design/icons'
+import { Layout, notification, Button } from 'antd'
+import { CloudDownloadOutlined } from '@ant-design/icons'
 import { RouterProvider } from '@tanstack/react-router'
 import { TanStackRouterDevtools } from '@tanstack/router-devtools'
 import BottomMenu from './components/BottomMenu'
 import SafeArea from './components/SafeArea'
 import { router } from './router'
 
-const { Header, Content } = Layout
-const { Title } = Typography
+const { Content } = Layout
 
 // PWA update detection
 const registerServiceWorker = () => {
@@ -65,9 +64,29 @@ const registerServiceWorker = () => {
   }
 }
 
+// Export the update checker function so it can be used by page components
+export const checkForUpdates = (setUpdating: (value: boolean) => void) => {
+  setUpdating(true)
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.ready.then(registration => {
+      registration.update().then(() => {
+        setTimeout(() => {
+          setUpdating(false)
+          notification.success({
+            message: 'Update Check Complete',
+            description: 'Checked for updates. If available, you will see an update notification.',
+            duration: 3
+          })
+        }, 1000)
+      })
+    })
+  } else {
+    setUpdating(false)
+  }
+}
+
 function App() {
   const [currentTab, setCurrentTab] = useState('home')
-  const [updating, setUpdating] = useState(false)
 
   // iOS detection
   const isIOS = () => {
@@ -97,27 +116,6 @@ function App() {
   useEffect(() => {
     registerServiceWorker()
   }, [])
-
-  // Manual update check function
-  const checkForUpdates = () => {
-    setUpdating(true)
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.ready.then(registration => {
-        registration.update().then(() => {
-          setTimeout(() => {
-            setUpdating(false)
-            notification.success({
-              message: 'Update Check Complete',
-              description: 'Checked for updates. If available, you will see an update notification.',
-              duration: 3
-            })
-          }, 1000)
-        })
-      })
-    } else {
-      setUpdating(false)
-    }
-  }
 
   // Keep tab state in sync with current route
   useEffect(() => {
@@ -154,20 +152,7 @@ function App() {
   return (
     <SafeArea position="both" style={{ minHeight: '100vh' }}>
       <Layout style={{ minHeight: '100vh' }}>
-        <Header style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-          <Title level={3} style={{ color: 'white', margin: 0 }}>
-            <HeartFilled style={{ marginRight: 8 }} />
-            Mood Tracker
-          </Title>
-          <Button
-            type="text"
-            icon={<CloudDownloadOutlined spin={updating} />}
-            onClick={checkForUpdates}
-            loading={updating}
-            style={{ color: 'white' }}
-          />
-        </Header>
-        <Content style={{ padding: '2rem', minHeight: '80vh', paddingBottom: '60px' }}>
+        <Content style={{ minHeight: '80vh', paddingBottom: '60px' }}>
           <RouterProvider router={router} />
           {import.meta.env.DEV && <TanStackRouterDevtools router={router} />}
         </Content>

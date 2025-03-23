@@ -1,11 +1,18 @@
 import { Card, Typography } from 'antd'
+import { UserOutlined } from '@ant-design/icons'
+import PageHeader from './PageHeader'
 
 const { Text } = Typography
 
 export function ProfilePage() {
   return (
-    <Card title="Your Profile" style={{ maxWidth: 600, margin: '0 auto' }}>
-      <Text>Profile settings and information will appear here.</Text>
-    </Card>
+    <>
+      <PageHeader title="Your Profile" icon={<UserOutlined />} />
+      <Card style={{ width: '100%' }}>
+        <div style={{ padding: '16px' }}>
+          <Text>Profile settings and information will appear here.</Text>
+        </div>
+      </Card>
+    </>
   )
 }

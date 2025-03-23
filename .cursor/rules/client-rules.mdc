@@ -5,3 +5,34 @@ alwaysApply: false
 ---
 - This is a Vite React Typescript project that uses the Ant D Design library. ALWAYS prefer using Ant D components over custom styling.
 - This is a Progressive Web App and should prioritize mobile-first design.
+- Avoid excessive styles. If there are unused styles in a component, remove them.
+
+## React Component Constructions
+
+- Prefer arrow functions when creating React components.
+- Use interfaces for types.
+- GOOD example implementation:
+```
+interface MoodButtonProps {
+  icon: ReactNode;
+  label: string;
+  onClick: () => void;
+}
+
+const MoodButton = ({ icon, label, onClick }: MoodButtonProps) => {
+  return (
+    <Flex vertical align="center">
+      <Button
+        type="text"
+        style={{ height: '60px', width: '60px' }}
+        onClick={onClick}
+      >
+        {icon}
+      </Button>
+      <Text>{label}</Text>
+    </Flex>
+  );
+};
+
+export default MoodButton;
+```
