@@ -1,4 +1,4 @@
-import { Card, Space, Typography, Button } from 'antd'
+import { Card, Space, Typography } from 'antd'
 import { SmileOutlined, HeartFilled } from '@ant-design/icons'
 import PageHeader from './PageHeader'
 
@@ -9,14 +9,6 @@ export function HomePage() {
   const date = new Date()
   const month = date.toLocaleString('default', { month: 'long' })
   const year = date.getFullYear()
-
-  const handleHighChase = () => {
-    console.log('High Chase button clicked')
-  }
-
-  const handleDsNuts = () => {
-    console.log('D\'s nuts button clicked')
-  }
 
   return (
     <>
